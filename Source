@@ -1,0 +1,108 @@
+//Final grade calculator written in C++
+
+
+#include <iostream>
+#include<string>
+using namespace std;
+
+//Structure declared for Student
+struct Student {
+	string name;
+	string idNum;
+	int numTests;
+	int* scores;
+	double average;
+	char grade;
+
+	Student() {
+		name = "";
+		idNum = "";
+		numTests = 0;
+	}
+
+
+	Student(string n, string id, int t) {
+		name = n;
+		idNum = id;
+		numTests = t;
+		scores = new int[t];
+		average = 0;
+		grade = ' ';
+	}
+
+	//Function sets up an array for student's test scores
+	void setScores(int studentScores[]) {
+		scores = studentScores;
+	}
+
+	//Function to calculate the average score
+	void setAvg() {
+		double tot = 0.0;
+		for (int i = 0; i < numTests; i++) {
+			tot = tot + scores[i];
+		}
+		average = tot / numTests;
+	}
+
+	//Function to assign a letter grade based on average
+	void setGrade() {
+		if (average > 91.0) {
+			grade = 'A';
+		}
+		else if (average > 81.0) {
+			grade = 'B';
+		}
+		else if (average > 71.0) {
+			grade = 'C';
+		}
+		else if (average > 61.0) {
+			grade = 'D';
+		}
+		else {
+			grade = 'F';
+		}
+	}
+};
+
+int main() {
+	int numOfTests;
+	cout << "How many tests: " << endl;
+	cin >> numOfTests;
+
+	int numOfStudents;
+	cout << "Enter the number of students: " << endl;
+	cin >> numOfStudents;
+
+	Student* listOfStudents = new Student[numOfStudents];
+
+	for (int i = 0; i < numOfStudents; i++) {
+
+		string id;
+		string name;
+		int* scores = new int[numOfTests];
+		cout << "Enter the name of student " << i << " :" << endl;
+		getchar();
+		getline(cin, name);
+		cout << "Enter the ID Number of " << name << " :" << endl;
+		cin >> id;
+		for (int x = 0; x < numOfTests; x++) {
+			cout << "Enter the score for test number " << x << " :" << endl;
+			cin >> scores[x];
+		}
+		Student temp(name, id, numOfTests);
+		temp.setScores(scores);
+		listOfStudents[i] = temp;
+	}
+
+	for (int j = 0; j < numOfStudents; j++) {
+		Student s = listOfStudents[j];
+		s.setAvg();
+		s.setGrade();
+		cout << "Student Name: " << s.name << endl;
+		cout << "Student ID Number: " << s.idNum << endl;
+		cout << "Average Test Score: " << s.average << endl;
+		cout << "Student Final Grade: " << s.grade << endl << endl;
+	}
+
+	return 0;
+}
